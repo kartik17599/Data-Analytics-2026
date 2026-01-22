@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { Topic, SubTopic, StudyContent, PracticeQuestion } from './types';
 import { INITIAL_SYLLABUS } from './constants';
 import { Dashboard } from './components/Dashboard';
@@ -176,6 +177,7 @@ const App: React.FC = () => {
           )}
         </div>
       </div>
+      <Analytics />
     </div>
   );
 };
