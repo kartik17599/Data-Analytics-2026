@@ -13,6 +13,7 @@
     "recharts": "^3.6.0",
     "react": "^19.2.3",
     "katex": "0.16.11",
+    "marked": "15.0.0",
     "@google/genai": "^1.37.0"
   },
   "devDependencies": {

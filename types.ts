@@ -41,6 +41,13 @@ export interface Topic {
   subTopics: SubTopic[];
 }
 
+export interface PlanDay {
+  day: number;
+  date: string;
+  subTopicIds: string[];
+  label: string;
+}
+
 export enum AppTab {
   Notes = 'Notes',
   LastMinute = 'Last Minute',
@@ -50,4 +57,9 @@ export enum AppTab {
   SolvedQuestion = 'Solved Question',
   Practice = 'Practice Quiz',
   Resources = 'Resources'
+}
+
+export interface UserSettings {
+  planStartDate: string;
+  planEndDate: string;
 }

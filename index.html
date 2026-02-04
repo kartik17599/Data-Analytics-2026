@@ -15,8 +15,9 @@
     <meta name="theme-color" content="#4f46e5">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script type="importmap">
 {
   "imports": {
@@ -25,6 +26,7 @@
     "react/": "https://esm.sh/react@^19.2.3/",
     "react": "https://esm.sh/react@^19.2.3",
     "katex": "https://esm.sh/katex@0.16.11",
+    "marked": "https://esm.sh/marked@15.0.0",
     "@google/genai": "https://esm.sh/@google/genai@^1.37.0"
   }
 }
@@ -34,15 +36,11 @@
     font-family: 'Inter', sans-serif; 
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior-y: contain;
-    background-color: #f8fafc;
+    background-color: #f6f8fa;
   }
   .font-handwriting { font-family: 'Kalam', cursive; }
-  .formula-paper {
-    background-image: 
-      linear-gradient(#e5e7eb 1px, transparent 1px),
-      linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  
   /* Custom scrollbar for mobile touch */
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -50,9 +48,116 @@
   /* Safe area padding for notched phones */
   .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
   .pt-safe { padding-top: env(safe-area-inset-top); }
+
+  /* GitHub README Style Enhancements */
+  .github-readme-preview {
+    background-color: #ffffff;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .github-readme-header {
+    background-color: #f6f8fa;
+    border-bottom: 1px solid #d0d7de;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1f2328;
+  }
+  .github-markdown-body {
+    padding: 32px;
+    font-size: 16px;
+    line-height: 1.6;
+    word-wrap: break-word;
+    color: #1f2328;
+  }
+  .github-markdown-body h1 {
+    font-size: 2em;
+    margin-bottom: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #d0d7de;
+    padding-bottom: 0.3em;
+  }
+  .github-markdown-body h2 {
+    font-size: 1.5em;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #d0d7de;
+    padding-bottom: 0.3em;
+  }
+  .github-markdown-body h3 {
+    font-size: 1.25em;
+    font-weight: 600;
+    margin-top: 24px;
+    margin-bottom: 16px;
+  }
+  .github-markdown-body blockquote {
+    border-left: 0.25em solid #d0d7de;
+    color: #636c76;
+    padding: 0 1em;
+    margin: 0 0 16px 0;
+  }
+  .github-markdown-body table {
+    display: block;
+    width: 100%;
+    width: max-content;
+    max-width: 100%;
+    overflow: auto;
+    border-spacing: 0;
+    border-collapse: collapse;
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+  .github-markdown-body table th {
+    font-weight: 600;
+    background-color: #f6f8fa;
+  }
+  .github-markdown-body table th, .github-markdown-body table td {
+    padding: 8px 13px;
+    border: 1px solid #d0d7de;
+  }
+  .github-markdown-body table tr {
+    background-color: #ffffff;
+    border-top: 1px solid #d0d7de;
+  }
+  .github-markdown-body table tr:nth-child(2n) {
+    background-color: #f6f8fa;
+  }
+  .github-markdown-body ul, .github-markdown-body ol {
+    padding-left: 2em;
+    margin-bottom: 16px;
+  }
+  .github-markdown-body code {
+    background-color: rgba(175, 184, 193, 0.2);
+    padding: 0.2em 0.4em;
+    border-radius: 6px;
+    font-size: 85%;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* PRINT STYLES FOR PDF DOWNLOAD */
+  @media print {
+    body { background-color: white !important; }
+    header, nav, .md\:hidden.fixed.bottom-0, button, .no-print {
+      display: none !important;
+    }
+    .bg-white { box-shadow: none !important; border: none !important; }
+    .rounded-3xl { border-radius: 0 !important; }
+    .max-w-7xl { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+    .p-6, .md\:p-10 { padding: 0 !important; }
+    .text-slate-900 { color: black !important; }
+    .prose { max-width: 100% !important; font-size: 12pt !important; }
+    .bg-slate-900 { background: white !important; color: black !important; border-bottom: 2px solid black !important; }
+    .text-indigo-400 { color: #666 !important; }
+    .page-break { page-break-before: always; }
+  }
 </style>
 </head>
-  <body class="bg-gray-50 text-gray-900 min-h-screen select-none pb-safe">
+  <body class="bg-[#f6f8fa] text-gray-900 min-h-screen select-none pb-safe">
     <div id="root"></div>
   </body>
 </html>

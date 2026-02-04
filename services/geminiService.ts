@@ -4,27 +4,52 @@ import { StudyContent, PracticeQuestion, Formula } from "../types";
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
-const SYSTEM_PROMPT = `You are a world-class Data Analytics professor specializing in GATE 2026 and professional certifications.
-Your goal is to provide perfectly structured, academically rigorous, yet accessible study material.
-Always use standard mathematical notation for formulas and clear, single-point statements for last-minute revision.`;
+const SYSTEM_PROMPT = `You are a world-class Data Analytics professor specializing in GATE 2026.
+Your goal is to explain complex concepts in the simplest way possible.
+Use the "ELI5" (Explain Like I'm Five) philosophy for foundations, then build up to technical rigor.
+Always return ONLY raw JSON.`;
+
+const parseGeminiJson = (text: string) => {
+  const cleaned = text.replace(/```json/g, "").replace(/```/g, "").trim();
+  try {
+    return JSON.parse(cleaned);
+  } catch (e) {
+    console.error("JSON Parse Error. Raw Text:", text);
+    throw new Error("Invalid JSON format returned from AI.");
+  }
+};
 
 export const generateStudyContent = async (topicTitle: string, category: string): Promise<StudyContent> => {
   const response = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
     contents: `Topic: "${topicTitle}" (${category}).
-    Provide a study guide with:
-    1. "notes": Concise technical notes.
-    2. "hinglishNotes": A conversational breakdown in Hinglish.
-    3. "lastMinuteNotes": 7-10 "Single Point" high-impact facts.
-    4. "tips": Specific exam shortcuts.
-    5. "formulas": Strictly standard academic LaTeX.
-       - "latex": Standard textbook LaTeX (e.g., \frac{n!}{(n-r)!}).
-       - "originalScript": The "original written way" - a plain text representation that looks like a student's manual note (e.g., nPr = n! / (n-r)!).
-       - "explanation": Exactly 1-sentence on what it measures.
-       - "variableDefinitions": Define every symbol and index.
-    6. "solvedQuestion": One high-quality solved GATE-style example.
-    7. "practiceQuestions": 10 unique problems.
-    8. "youtubeQuery": Optimal search string.`,
+    Provide a highly organized study guide in GitHub README.md style.
+    
+    CRITICAL: Include a section titled "🧭 Decision Matrix: Which Formula to Use?".
+    This section must be a Markdown TABLE that maps:
+    | If the Question mentions... | The Scenario is... | Use this Formula/Logic |
+    | :--- | :--- | :--- |
+    
+    Format the "notes" field as follows:
+    - # ${topicTitle}
+    - > [ELI5 Summary]
+    - ## 🚀 Quick Overview
+    - ## 🎢 The Concept Analogy
+    - ## 🛠️ Technical Breakdown (Core Logic)
+    - ## 🧭 Decision Matrix: Which Formula to Use? (The Mapping Table)
+    - ## ⚖️ Comparison vs Alternatives
+    - ## ⚠️ Common Exam Traps
+    - ## 📚 Revision Checklist
+
+    Structure for JSON:
+    1. "notes": Organized GitHub-style Markdown.
+    2. "hinglishNotes": Conversational "Bhai-to-Bhai" explanation.
+    3. "lastMinuteNotes": 10 "Memory Hooks".
+    4. "tips": 5 "Cheat-code" exam tricks.
+    5. "formulas": Array of objects (LaTeX + explanation).
+    6. "solvedQuestion": 1 solved exam question.
+    7. "practiceQuestions": 10 practice questions.
+    8. "youtubeQuery": Best search term for a visual summary.`,
     config: {
       systemInstruction: SYSTEM_PROMPT,
       responseMimeType: "application/json",
@@ -77,18 +102,13 @@ export const generateStudyContent = async (topicTitle: string, category: string)
     },
   });
 
-  try {
-    return JSON.parse(response.text.trim());
-  } catch (error) {
-    console.error("Gemini Parse Error:", error);
-    throw new Error("Failed to generate consistent study content.");
-  }
+  return parseGeminiJson(response.text);
 };
 
 export const fetchFormulaByName = async (formulaName: string): Promise<Formula> => {
   const response = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
-    contents: `Mathematical formula for "${formulaName}". Provide both standard LaTeX and a "originalScript" (plain text/handwritten style). Define all variables. 1-sentence explanation.`,
+    contents: `Detailed formula data for "${formulaName}".`,
     config: {
       systemInstruction: SYSTEM_PROMPT,
       responseMimeType: "application/json",
@@ -106,17 +126,13 @@ export const fetchFormulaByName = async (formulaName: string): Promise<Formula> 
     }
   });
 
-  try {
-    return JSON.parse(response.text.trim());
-  } catch (error) {
-    throw new Error("Formula not found.");
-  }
+  return parseGeminiJson(response.text);
 };
 
 export const generateMorePracticeQuestions = async (topicTitle: string, category: string, count: number = 10): Promise<PracticeQuestion[]> => {
   const response = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
-    contents: `Generate ${count} additional unique practice questions for "${topicTitle}".`,
+    contents: `Generate ${count} additional unique practice questions for "${topicTitle}". Make sure they test conceptual clarity first.`,
     config: {
       systemInstruction: SYSTEM_PROMPT,
       responseMimeType: "application/json",
@@ -136,5 +152,5 @@ export const generateMorePracticeQuestions = async (topicTitle: string, category
     },
   });
 
-  return JSON.parse(response.text.trim());
+  return parseGeminiJson(response.text);
 };
