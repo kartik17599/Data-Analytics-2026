@@ -247,9 +247,9 @@ const App: React.FC = () => {
            {!isInstalled && (
              <button 
                onClick={handleInstallApp}
-               className="md:hidden flex items-center gap-1.5 bg-indigo-600 text-white px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-indigo-200"
+               className={`md:hidden flex items-center gap-1.5 bg-indigo-600 text-white px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-indigo-200 ${deferredPrompt ? 'animate-pulse' : ''}`}
              >
-               <span>Install App</span>
+               <span>{deferredPrompt ? 'Install App' : 'Get App'}</span>
              </button>
            )}
            <button 
@@ -366,15 +366,15 @@ const App: React.FC = () => {
                 </button>
               </div>
               
-              <h3 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Install App</h3>
-              <p className="text-slate-500 font-bold mb-10 text-sm leading-relaxed">Your browser didn't trigger the automatic prompt. Use the <span className="text-indigo-600 underline underline-offset-4">manual setup</span> steps below:</p>
+              <h3 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">Android Install</h3>
+              <p className="text-slate-500 font-bold mb-10 text-sm leading-relaxed">To add this tracker to your home screen (Android Chrome):</p>
               
               <div className="space-y-8 mb-10">
                 <div className="flex gap-5 group">
                   <div className="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-sm font-black shrink-0 shadow-md">1</div>
                   <div className="flex flex-col">
-                    <p className="text-slate-700 font-black text-sm mb-2">Tap Three Dots (⋮)</p>
-                    <p className="text-[11px] font-bold text-slate-500 leading-tight">Located at the top-right of your mobile browser menu.</p>
+                    <p className="text-slate-700 font-black text-sm mb-2">Tap Browser Menu (⋮)</p>
+                    <p className="text-[11px] font-bold text-slate-500 leading-tight">Usually three dots in the top right corner.</p>
                   </div>
                 </div>
                 
@@ -382,15 +382,15 @@ const App: React.FC = () => {
                   <div className="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-sm font-black shrink-0 shadow-md">2</div>
                   <div className="flex flex-col">
                     <p className="text-slate-700 font-black text-sm mb-2">Select "Install App"</p>
-                    <p className="text-[11px] font-bold text-slate-500 leading-tight">Or "Add to Home Screen" to enable standalone native-like experience.</p>
+                    <p className="text-[11px] font-bold text-slate-500 leading-tight">Or "Add to Home Screen" if Install option isn't visible.</p>
                   </div>
                 </div>
 
                 <div className="flex gap-5">
                   <div className="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-sm font-black shrink-0 shadow-md">3</div>
                   <div className="flex flex-col">
-                    <p className="text-slate-700 font-black text-sm mb-2">Ready to Study</p>
-                    <p className="text-[11px] font-bold text-slate-500 leading-tight">The app icon will appear instantly on your device home screen.</p>
+                    <p className="text-slate-700 font-black text-sm mb-2">Launch from Home</p>
+                    <p className="text-[11px] font-bold text-slate-500 leading-tight">Enjoy fullscreen immersive study mode.</p>
                   </div>
                 </div>
               </div>
@@ -399,7 +399,7 @@ const App: React.FC = () => {
                 onClick={() => setShowManualModal(false)}
                 className="w-full bg-slate-900 text-white py-5 rounded-[1.5rem] font-black text-sm uppercase tracking-[0.2em] shadow-2xl shadow-slate-200 hover:bg-indigo-600 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
-                Back to Roadmap
+                Got it
               </button>
            </div>
         </div>
